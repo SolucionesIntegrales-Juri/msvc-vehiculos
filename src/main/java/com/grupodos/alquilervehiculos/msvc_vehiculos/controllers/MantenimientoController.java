@@ -22,7 +22,7 @@ import java.util.UUID;
 @Slf4j
 @RequiredArgsConstructor
 @Validated
-@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:5173"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:5173","https://soluciones-integrales-juri.vercel.app"})
 public class MantenimientoController {
     private final MantenimientoService mantenimientoService;
 
