@@ -42,6 +42,9 @@ public class Vehiculo {
     @Column(nullable = false)
     private String descripcion;
 
+    @Column(name = "imagen_url")
+    private String imagenUrl;
+
     @Column(name = "creado_en")
     private OffsetDateTime creadoEn;
 

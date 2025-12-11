@@ -18,7 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -32,6 +35,7 @@ public class VehiculoService {
     private final VehiculoRepository vehiculoRepository;
     private final ModeloRepository modeloRepository;
     private final TipoVehiculoRepository tipoVehiculoRepository;
+    private final CloudinaryService cloudinaryService;
 
     @Transactional(readOnly = true)
     public List<Vehiculo> listarTodos() {
@@ -231,5 +235,25 @@ public class VehiculoService {
                         vehiculo.isActivo()
                 ))
                 .collect(Collectors.toList());
+    }
+
+    public Vehiculo actualizarImagen(UUID id, MultipartFile file) throws IOException {
+        Vehiculo vehiculo = obtenerPorId(id);
+
+        // 1. Convertir MultipartFile a File temporal
+        File tempFile = File.createTempFile("vehiculo_", file.getOriginalFilename());
+        file.transferTo(tempFile);
+
+        // 2. Subir la imagen a Cloudinary
+        String imageUrl = cloudinaryService.uploadImage(tempFile);
+
+        // 3. Guardar URL en el vehículo
+        vehiculo.setImagenUrl(imageUrl);
+        vehiculoRepository.save(vehiculo);
+
+        // 4. Borrar archivo temporal
+        tempFile.delete();
+
+        return vehiculo;
     }
 }
