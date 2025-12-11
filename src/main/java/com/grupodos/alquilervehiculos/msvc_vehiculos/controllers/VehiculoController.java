@@ -25,7 +25,7 @@ import java.util.UUID;
 @Slf4j
 @RequiredArgsConstructor
 @Validated
-@CrossOrigin(origins = {"*"})
+@CrossOrigin(origins = {"*", "https://soluciones-integrales-juri.vercel.app"})
 public class VehiculoController {
 
     private final VehiculoService vehiculoService;
